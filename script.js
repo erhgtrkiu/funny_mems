@@ -1,93 +1,268 @@
-// Данные тематических мемов
-const memeData = [
-    {
-        id: 1,
-        title: "💼 Работа",
-        image: "https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Рабочие+мемы",
-        likes: 245,
-        comments: 34,
-        views: 1200,
-        tags: ["офис", "начальник", "дедлайн", "понедельник"],
-        theme: "work"
-    },
-    {
-        id: 2,
-        title: "🎓 Учеба",
-        image: "https://via.placeholder.com/300x200/4ecdc4/ffffff?text=Учебные+мемы",
-        likes: 189,
-        comments: 28,
-        views: 987,
-        tags: ["сессия", "студенты", "экзамены", "домашка"],
-        theme: "study"
-    },
-    {
-        id: 3,
-        title: "🎉 Праздники",
-        image: "https://via.placeholder.com/300x200/ffe66d/000000?text=Праздничные+мемы",
-        likes: 312,
-        comments: 45,
-        views: 1500,
-        tags: ["Новый Год", "дни рождения", "отпуск", "вечеринка"],
-        theme: "holidays"
-    },
-    {
-        id: 4,
-        title: "🐾 Животные",
-        image: "https://via.placeholder.com/300x200/292f36/ffffff?text=Мемы+с+животными",
-        likes: 421,
-        comments: 67,
-        views: 2100,
-        tags: ["коты", "собаки", "милые", "забавные"],
-        theme: "animals"
-    },
-    {
-        id: 5,
-        title: "💻 IT и технологии",
-        image: "https://via.placeholder.com/300x200/4ecdc4/ffffff?text=IT+мемы",
-        likes: 334,
-        comments: 52,
-        views: 1800,
-        tags: ["программирование", "гаджеты", "интернет", "баги"],
-        theme: "work"
-    },
-    {
-        id: 6,
-        title: "🍕 Еда",
-        image: "https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Мемы+о+еде",
-        likes: 278,
-        comments: 38,
-        views: 1350,
-        tags: ["рецепты", "диета", "вкусно", "готовка"],
-        theme: "holidays"
-    }
-];
+// Данные мемов
+const memeData = {
+    popular: [
+        {
+            id: 1,
+            title: "Когда понедельник",
+            image: "https://via.placeholder.com/300x250/ff6b6b/ffffff?text=Понедельник",
+            likes: 245,
+            dislikes: 12,
+            comments: 34,
+            theme: "work"
+        },
+        {
+            id: 2,
+            title: "Программист за работой",
+            image: "https://via.placeholder.com/300x250/4ecdc4/ffffff?text=Код",
+            likes: 189,
+            dislikes: 5,
+            comments: 28,
+            theme: "work"
+        },
+        {
+            id: 3,
+            title: "Студент перед экзаменом",
+            image: "https://via.placeholder.com/300x250/ffe66d/000000?text=Сессия",
+            likes: 312,
+            dislikes: 8,
+            comments: 45,
+            theme: "study"
+        },
+        {
+            id: 4,
+            title: "Новый год уже близко",
+            image: "https://via.placeholder.com/300x250/ff6b6b/ffffff?text=Новый+Год",
+            likes: 156,
+            dislikes: 3,
+            comments: 22,
+            theme: "holidays"
+        }
+    ],
+    trending: [
+        {
+            id: 5,
+            title: "Котик удивлен",
+            image: "https://via.placeholder.com/300x250/292f36/ffffff?text=Кот",
+            likes: 421,
+            dislikes: 15,
+            comments: 67,
+            theme: "animals"
+        },
+        {
+            id: 6,
+            title: "Когда дедлайн",
+            image: "https://via.placeholder.com/300x250/4ecdc4/ffffff?text=Дедлайн",
+            likes: 298,
+            dislikes: 9,
+            comments: 41,
+            theme: "work"
+        },
+        {
+            id: 7,
+            title: "Пятница настроение",
+            image: "https://via.placeholder.com/300x250/ffe66d/000000?text=Пятница",
+            likes: 334,
+            dislikes: 7,
+            comments: 52,
+            theme: "work"
+        }
+    ]
+};
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    initializeMemeGenerator();
-    loadThemes();
+    loadPopularMemes();
+    loadTrendingMemes();
+    loadThemedMemes();
     setupEventListeners();
+    setupMemeGenerator();
 });
 
-// Инициализация генератора мемов
-function initializeMemeGenerator() {
+// Загрузка популярных мемов
+function loadPopularMemes() {
+    const container = document.getElementById('popularMemes');
+    container.innerHTML = '';
+    
+    memeData.popular.forEach(meme => {
+        container.appendChild(createMemeCard(meme));
+    });
+}
+
+// Загрузка трендовых мемов
+function loadTrendingMemes() {
+    const container = document.getElementById('trendingMemes');
+    container.innerHTML = '';
+    
+    memeData.trending.forEach(meme => {
+        container.appendChild(createMemeCard(meme));
+    });
+}
+
+// Загрузка тематических мемов
+function loadThemedMemes(theme = 'all') {
+    const container = document.getElementById('themedMemes');
+    container.innerHTML = '';
+    
+    const allMemes = [...memeData.popular, ...memeData.trending];
+    const filteredMemes = theme === 'all' 
+        ? allMemes 
+        : allMemes.filter(meme => meme.theme === theme);
+    
+    filteredMemes.forEach(meme => {
+        container.appendChild(createMemeCard(meme));
+    });
+}
+
+// Создание карточки мема
+function createMemeCard(meme) {
+    const card = document.createElement('div');
+    card.className = 'meme-card';
+    card.innerHTML = `
+        <img src="${meme.image}" alt="${meme.title}" class="meme-img">
+        <div class="meme-info">
+            <div class="meme-title">${meme.title}</div>
+            <div class="meme-stats">
+                <div class="meme-actions">
+                    <button class="like-btn" data-id="${meme.id}">👍 ${meme.likes}</button>
+                    <button class="dislike-btn" data-id="${meme.id}">👎 ${meme.dislikes}</button>
+                </div>
+                <div>💬 ${meme.comments}</div>
+            </div>
+            <div class="comment-section">
+                <div class="comment-form">
+                    <input type="text" placeholder="Добавить комментарий..." data-id="${meme.id}">
+                    <button class="btn" data-id="${meme.id}">Отправить</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+// Настройка обработчиков событий
+function setupEventListeners() {
+    // Кнопка входа
+    document.getElementById('loginBtn').addEventListener('click', function() {
+        alert('Функция входа будет реализована позже!');
+    });
+    
+    // Кнопка "Начать создавать"
+    document.getElementById('startCreatingBtn').addEventListener('click', function() {
+        document.getElementById('generator').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Табы тематических мемов
+    document.querySelectorAll('.theme-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.theme-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const theme = this.getAttribute('data-theme');
+            loadThemedMemes(theme);
+        });
+    });
+    
+    // Обработка лайков/дизлайков (делегирование событий)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('like-btn')) {
+            const memeId = e.target.getAttribute('data-id');
+            handleLike(memeId);
+        } else if (e.target.classList.contains('dislike-btn')) {
+            const memeId = e.target.getAttribute('data-id');
+            handleDislike(memeId);
+        }
+    });
+    
+    // Обработка отправки комментариев (делегирование событий)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn') && e.target.parentElement.classList.contains('comment-form')) {
+            const memeId = e.target.getAttribute('data-id');
+            const input = e.target.parentElement.querySelector('input');
+            const commentText = input.value.trim();
+            
+            if (commentText) {
+                addComment(memeId, commentText);
+                input.value = '';
+            }
+        }
+    });
+}
+
+// Обработка лайков
+function handleLike(memeId) {
+    // В реальном приложении здесь был бы запрос к серверу
+    alert(`Лайк добавлен к мему #${memeId}`);
+}
+
+// Обработка дизлайков
+function handleDislike(memeId) {
+    // В реальном приложении здесь был бы запрос к серверу
+    alert(`Дизлайк добавлен к мему #${memeId}`);
+}
+
+// Добавление комментария
+function addComment(memeId, text) {
+    // В реальном приложении здесь был бы запрос к серверу
+    alert(`Комментарий "${text}" добавлен к мему #${memeId}`);
+}
+
+// Настройка генератора мемов
+function setupMemeGenerator() {
     const canvas = document.getElementById('memeCanvas');
     const ctx = canvas.getContext('2d');
-    const placeholder = document.getElementById('canvasPlaceholder');
+    const imageUpload = document.getElementById('imageUpload');
+    const topTextInput = document.getElementById('topText');
+    const bottomTextInput = document.getElementById('bottomText');
+    const generateBtn = document.getElementById('generateBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
     
-    // Первоначальная отрисовка placeholder
-    drawPlaceholder();
+    let currentImage = null;
     
-    function drawPlaceholder() {
-        canvas.style.display = 'none';
-        placeholder.style.display = 'block';
-    }
+    // Загрузка изображения
+    imageUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    drawMeme();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
     
+    // Обработка изменения текста
+    topTextInput.addEventListener('input', drawMeme);
+    bottomTextInput.addEventListener('input', drawMeme);
+    
+    // Кнопка генерации
+    generateBtn.addEventListener('click', drawMeme);
+    
+    // Кнопка скачивания
+    downloadBtn.addEventListener('click', function() {
+        if (currentImage) {
+            const link = document.createElement('a');
+            link.download = 'my-meme.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        } else {
+            alert('Сначала загрузите изображение!');
+        }
+    });
+    
+    // Функция отрисовки мема
     function drawMeme() {
-        const currentImage = window.currentImage;
-        
         if (!currentImage) {
-            drawPlaceholder();
+            ctx.fillStyle = '#f9f9f9';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#666';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Загрузите изображение для создания мема', canvas.width / 2, canvas.height / 2);
             return;
         }
         
@@ -104,151 +279,27 @@ function initializeMemeGenerator() {
         ctx.drawImage(currentImage, x, y, width, height);
         
         // Настройки текста
-        const textSize = parseInt(document.getElementById('textSize').value);
-        const textColor = document.getElementById('textColor').value;
-        
-        ctx.fillStyle = textColor;
+        ctx.fillStyle = 'white';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
         ctx.textAlign = 'center';
-        ctx.font = `bold ${textSize}px Impact`;
+        ctx.font = 'bold 30px Impact';
         
         // Верхний текст
-        const topText = document.getElementById('topText').value;
+        const topText = topTextInput.value;
         if (topText) {
-            ctx.fillText(topText.toUpperCase(), canvas.width / 2, 50);
-            ctx.strokeText(topText.toUpperCase(), canvas.width / 2, 50);
+            ctx.fillText(topText, canvas.width / 2, 40);
+            ctx.strokeText(topText, canvas.width / 2, 40);
         }
         
         // Нижний текст
-        const bottomText = document.getElementById('bottomText').value;
+        const bottomText = bottomTextInput.value;
         if (bottomText) {
-            ctx.fillText(bottomText.toUpperCase(), canvas.width / 2, canvas.height - 30);
-            ctx.strokeText(bottomText.toUpperCase(), canvas.width / 2, canvas.height - 30);
+            ctx.fillText(bottomText, canvas.width / 2, canvas.height - 20);
+            ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 20);
         }
-        
-        // Показываем canvas и скрываем placeholder
-        canvas.style.display = 'block';
-        placeholder.style.display = 'none';
     }
     
-    // Сохраняем функцию отрисовки в глобальной области видимости
-    window.drawMeme = drawMeme;
-    window.drawPlaceholder = drawPlaceholder;
-}
-
-// Загрузка тематических мемов
-function loadThemes(theme = 'all') {
-    const container = document.getElementById('themesGrid');
-    container.innerHTML = '';
-    
-    const filteredMemes = theme === 'all' 
-        ? memeData 
-        : memeData.filter(meme => meme.theme === theme);
-    
-    filteredMemes.forEach(meme => {
-        container.appendChild(createThemeCard(meme));
-    });
-}
-
-// Создание карточки темы
-function createThemeCard(meme) {
-    const card = document.createElement('div');
-    card.className = 'theme-card';
-    card.innerHTML = `
-        <div class="theme-image" style="background: linear-gradient(45deg, ${getRandomColor()}, ${getRandomColor()})"></div>
-        <div class="theme-info">
-            <div class="theme-title">${meme.title}</div>
-            <div class="theme-stats">
-                <span>👍 ${meme.likes}</span>
-                <span>💬 ${meme.comments}</span>
-                <span>👁 ${meme.views}</span>
-            </div>
-            <div class="theme-tags">
-                ${meme.tags.map(tag => `<span class="theme-tag">${tag}</span>`).join('')}
-            </div>
-        </div>
-    `;
-    
-    card.addEventListener('click', function() {
-        alert(`Открывается раздел: ${meme.title}`);
-        // В реальном приложении здесь была бы навигация к разделу
-    });
-    
-    return card;
-}
-
-// Случайный цвет для карточек
-function getRandomColor() {
-    const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#292f36', '#6c5ce7', '#fd79a8'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-// Настройка обработчиков событий
-function setupEventListeners() {
-    // Загрузка изображения
-    const imageUpload = document.getElementById('imageUpload');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const fileName = document.getElementById('fileName');
-    
-    uploadBtn.addEventListener('click', () => imageUpload.click());
-    
-    imageUpload.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            fileName.textContent = file.name;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    window.currentImage = img;
-                    window.drawMeme();
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    
-    // Обработка изменения текста и настроек
-    document.getElementById('topText').addEventListener('input', window.drawMeme);
-    document.getElementById('bottomText').addEventListener('input', window.drawMeme);
-    document.getElementById('textSize').addEventListener('input', window.drawMeme);
-    document.getElementById('textColor').addEventListener('input', window.drawMeme);
-    
-    // Кнопка генерации
-    document.getElementById('generateBtn').addEventListener('click', window.drawMeme);
-    
-    // Кнопка скачивания
-    document.getElementById('downloadBtn').addEventListener('click', function() {
-        if (window.currentImage) {
-            const canvas = document.getElementById('memeCanvas');
-            const link = document.createElement('a');
-            link.download = 'my-meme.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        } else {
-            alert('Сначала загрузите изображение!');
-        }
-    });
-    
-    // Кнопка очистки
-    document.getElementById('clearBtn').addEventListener('click', function() {
-        document.getElementById('topText').value = '';
-        document.getElementById('bottomText').value = '';
-        document.getElementById('imageUpload').value = '';
-        document.getElementById('fileName').textContent = 'Файл не выбран';
-        window.currentImage = null;
-        window.drawPlaceholder();
-    });
-    
-    // Табы тематических мемов
-    document.querySelectorAll('.theme-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('.theme-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const theme = this.getAttribute('data-theme');
-            loadThemes(theme);
-        });
-    });
+    // Первоначальная отрисовка
+    drawMeme();
 }
