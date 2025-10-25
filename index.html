@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeHub - Создавай и делись мемами</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">MemeHub</div>
+                <nav>
+                    <ul>
+                        <li><a href="#popular">Популярное</a></li>
+                        <li><a href="#trending">Тренды</a></li>
+                        <li><a href="#generator">Создать мем</a></li>
+                        <li><a href="#themes">Темы</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <button class="btn" id="loginBtn">Войти</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Создавай и делись смешными мемами</h1>
+            <p>Платформа для создания и обмена самыми смешными мемами и GIF-ками. Присоединяйся к нашему сообществу!</p>
+            <button class="btn btn-secondary" id="startCreatingBtn">Начать создавать</button>
+        </div>
+    </section>
+    
+    <section id="popular" class="section">
+        <div class="container">
+            <h2 class="section-title">Популярные мемы</h2>
+            <div class="meme-grid" id="popularMemes">
+                <!-- Мемы будут загружены через JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <section id="trending" class="section">
+        <div class="container">
+            <h2 class="section-title">Трендовые мемы</h2>
+            <div class="meme-grid" id="trendingMemes">
+                <!-- Мемы будут загружены через JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <section id="generator" class="section">
+        <div class="container">
+            <h2 class="section-title">Создай свой мем</h2>
+            <div class="meme-generator">
+                <div class="generator-controls">
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <input type="text" id="topText" placeholder="Верхний текст">
+                    <input type="text" id="bottomText" placeholder="Нижний текст">
+                    <button class="btn" id="generateBtn">Создать мем</button>
+                    <button class="btn btn-secondary" id="downloadBtn">Скачать мем</button>
+                </div>
+                <div class="meme-canvas-container">
+                    <canvas id="memeCanvas" width="500" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="themes" class="section">
+        <div class="container">
+            <h2 class="section-title">Тематические мемы</h2>
+            <div class="theme-tabs">
+                <div class="theme-tab active" data-theme="all">Все</div>
+                <div class="theme-tab" data-theme="work">Работа</div>
+                <div class="theme-tab" data-theme="study">Учеба</div>
+                <div class="theme-tab" data-theme="holidays">Праздники</div>
+                <div class="theme-tab" data-theme="animals">Животные</div>
+            </div>
+            <div class="meme-grid" id="themedMemes">
+                <!-- Мемы будут загружены через JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">MemeHub</div>
+                <p>Платформа для создания и обмена мемами © 2023</p>
+                <div class="social-links">
+                    <a href="#">VK</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
