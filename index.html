@@ -1,1 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeGenerator - Создай свой мем</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #292f36;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #292f36;
+            text-align: center;
+        }
+
+        .generator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .generator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .controls-panel {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 3px dashed #adb5bd;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #292f36;
+            font-size: 1rem;
+        }
+
+        .file-upload-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .file-upload-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
+        .text-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .text-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+        }
+
+        .color-picker {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #3dbeb6;
+            transform: translateY(-2px);
+        }
+
+        .preview-panel {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 3px dashed #adb5bd;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-header h3 {
+            font-size: 1.5rem;
+            color: #292f36;
+        }
+
+        .meme-canvas-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #memeCanvas {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .canvas-placeholder {
+            text-align: center;
+            color: #adb5bd;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .theme-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .theme-tab {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #adb5bd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .theme-tab.active {
+            background: #4ecdc4;
+            color: white;
+            border-color: #4ecdc4;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .theme-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffe66d;
+        }
+
+        .theme-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        .theme-info {
+            padding: 20px;
+        }
+
+        .theme-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #292f36;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .theme-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .theme-tag {
+            background: #f7fff7;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #292f36;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 MemeGenerator</h1>
+            <p>Создавайте и делитесь смешными мемами за пару кликов!</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2>🎨 Создай свой мем</h2>
+                
+                <div class="generator-container">
+                    <div class="controls-panel">
+                        <div class="control-group">
+                            <label class="control-label">📁 Выберите изображение</label>
+                            <button class="file-upload-btn" id="uploadBtn">
+                                📸 Выбрать файл
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                            <div class="file-name" id="fileName">Файл не выбран</div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">📝 Верхний текст</label>
+                            <input type="text" class="text-input" id="topText" placeholder="Введите текст для верха мема...">
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">📝 Нижний текст</label>
+                            <input type="text" class="text-input" id="bottomText" placeholder="Введите текст для низа мема...">
+                        </div>
+                        
+                        <div class="text-controls">
+                            <div class="control-group">
+                                <label class="control-label">Размер текста</label>
+                                <input type="range" id="textSize" min="20" max="60" value="30" class="slider">
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label">Цвет текста</label>
+                                <input type="color" id="textColor" value="#ffffff" class="color-picker">
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="generateBtn">
+                                🎨 Создать мем
+                            </button>
+                            <button class="btn btn-secondary" id="downloadBtn">
+                                💾 Скачать мем
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-panel">
+                        <div class="preview-header">
+                            <h3>Предпросмотр</h3>
+                            <button class="btn btn-secondary" id="clearBtn" style="padding: 8px 15px;">
+                                Очистить
+                            </button>
+                        </div>
+                        <div class="meme-canvas-container">
+                            <canvas id="memeCanvas" width="500" height="400"></canvas>
+                            <div class="canvas-placeholder" id="canvasPlaceholder">
+                                <div class="placeholder-icon">📁</div>
+                                <p>Загрузите изображение для создания мема</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📂 Тематические мемы</h2>
+                
+                <div class="theme-tabs">
+                    <button class="theme-tab active" data-theme="all">Все</button>
+                    <button class="theme-tab" data-theme="work">💼 Работа</button>
+                    <button class="theme-tab" data-theme="study">🎓 Учеба</button>
+                    <button class="theme-tab" data-theme="holidays">🎉 Праздники</button>
+                    <button class="theme-tab" data-theme="animals">🐾 Животные</button>
+                </div>
+                
+                <div class="themes-grid" id="themesGrid">
+                    <!-- Мемы будут загружены через JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Данные тематических мемов
+        const memeData = [
+            {
+                id: 1,
+                title: "💼 Работа",
+                likes: 245,
+                comments: 34,
+                views: 1200,
+                tags: ["офис", "начальник", "дедлайн", "понедельник"],
+                theme: "work"
+            },
+            {
+                id: 2,
+                title: "🎓 Учеба",
+                likes: 189,
+                comments: 28,
+                views: 987,
+                tags: ["сессия", "студенты", "экзамены", "домашка"],
+                theme: "study"
+            },
+            {
+                id: 3,
+                title: "🎉 Праздники",
+                likes: 312,
+                comments: 45,
+                views: 1500,
+                tags: ["Новый Год", "дни рождения", "отпуск", "вечеринка"],
+                theme: "holidays"
+            },
+            {
+                id: 4,
+                title: "🐾 Животные",
+                likes: 421,
+                comments: 67,
+                views: 2100,
+                tags: ["коты", "собаки", "милые", "забавные"],
+                theme: "animals"
+            },
+            {
+                id: 5,
+                title: "💻 IT и технологии",
+                likes: 334,
+                comments: 52,
+                views: 1800,
+                tags: ["программирование", "гаджеты", "интернет", "баги"],
+                theme: "work"
+            },
+            {
+                id: 6,
+                title: "🍕 Еда",
+                likes: 278,
+                comments: 38,
+                views: 1350,
+                tags: ["рецепты", "диета", "вкусно", "готовка"],
+                theme: "holidays"
+            }
+        ];
+
+        // Переменные
+        let currentImage = null;
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            setupEventListeners();
+            loadThemes();
+            drawPlaceholder();
+        }
+
+        function setupEventListeners() {
+            // Загрузка изображения
+            const imageUpload = document.getElementById('imageUpload');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileName = document.getElementById('fileName');
+            
+            uploadBtn.addEventListener('click', function() {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    fileName.textContent = file.name;
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            currentImage = img;
+                            drawMeme();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Обработка изменения текста
+            document.getElementById('topText').addEventListener('input', drawMeme);
+            document.getElementById('bottomText').addEventListener('input', drawMeme);
+            document.getElementById('textSize').addEventListener('input', drawMeme);
+            document.getElementById('textColor').addEventListener('input', drawMeme);
+            
+            // Кнопки
+            document.getElementById('generateBtn').addEventListener('click', drawMeme);
+            document.getElementById('downloadBtn').addEventListener('click', downloadMeme);
+            document.getElementById('clearBtn').addEventListener('click', clearCanvas);
+            
+            // Табы тематических мемов
+            document.querySelectorAll('.theme-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.theme-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const theme = this.getAttribute('data-theme');
+                    loadThemes(theme);
+                });
+            });
+        }
+
+        function drawPlaceholder() {
+            const canvas = document.getElementById('memeCanvas');
+            const placeholder = document.getElementById('canvasPlaceholder');
+            canvas.style.display = 'none';
+            placeholder.style.display = 'block';
+        }
+
+        function drawMeme() {
+            const canvas = document.getElementById('memeCanvas');
+            const ctx = canvas.getContext('2d');
+            const placeholder = document.getElementById('canvasPlaceholder');
+            
+            if (!currentImage) {
+                drawPlaceholder();
+                return;
+            }
+            
+            // Очистка canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Рисование изображения
+            const scale = Math.min(canvas.width / currentImage.width, canvas.height / currentImage.height);
+            const width = currentImage.width * scale;
+            const height = currentImage.height * scale;
+            const x = (canvas.width - width) / 2;
+            const y = (canvas.height - height) / 2;
+            
+            ctx.drawImage(currentImage, x, y, width, height);
+            
+            // Настройки текста
+            const textSize = parseInt(document.getElementById('textSize').value);
+            const textColor = document.getElementById('textColor').value;
+            
+            ctx.fillStyle = textColor;
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 3;
+            ctx.textAlign = 'center';
+            ctx.font = `bold ${textSize}px Arial`;
+            
+            // Верхний текст
+            const topText = document.getElementById('topText').value;
+            if (topText) {
+                ctx.fillText(topText.toUpperCase(), canvas.width / 2, 50);
+                ctx.strokeText(topText.toUpperCase(), canvas.width / 2, 50);
+            }
+            
+            // Нижний текст
+            const bottomText = document.getElementById('bottomText').value;
+            if (bottomText) {
+                ctx.fillText(bottomText.toUpperCase(), canvas.width / 2, canvas.height - 30);
+                ctx.strokeText(bottomText.toUpperCase(), canvas.width / 2, canvas.height - 30);
+            }
+            
+            // Показываем canvas
+            canvas.style.display = 'block';
+            placeholder.style.display = 'none';
+        }
+
+        function downloadMeme() {
+            if (!currentImage) {
+                alert('Сначала загрузите изображение!');
+                return;
+            }
+            
+            const canvas = document.getElementById('memeCanvas');
+            const link = document.createElement('a');
+            link.download = 'my-meme.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function clearCanvas() {
+            document.getElementById('topText').value = '';
+            document.getElementById('bottomText').value = '';
+            document.getElementById('imageUpload').value = '';
+            document.getElementById('fileName').textContent = 'Файл не выбран';
+            document.getElementById('textSize').value = 30;
+            document.getElementById('textColor').value = '#ffffff';
+            currentImage = null;
+            drawPlaceholder();
+        }
+
+        function loadThemes(theme = 'all') {
+            const container = document.getElementById('themesGrid');
+            container.innerHTML = '';
+            
+            const filteredMemes = theme === 'all' 
+                ? memeData 
+                : memeData.filter(meme => meme.theme === theme);
+            
+            filteredMemes.forEach(meme => {
+                const card = document.createElement('div');
+                card.className = 'theme-card';
+                card.innerHTML = `
+                    <div class="theme-image"></div>
+                    <div class="theme-info">
+                        <div class="theme-title">${meme.title}</div>
+                        <div class="theme-stats">
+                            <span>👍 ${meme.likes}</span>
+                            <span>💬 ${meme.comments}</span>
+                            <span>👁 ${meme.views}</span>
+                        </div>
+                        <div class="theme-tags">
+                            ${meme.tags.map(tag => `<span class="theme-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    alert(`Открывается раздел: ${meme.title}`);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
