@@ -1,9 +1,15 @@
 :root {
     --primary: #ff6b6b;
+    --primary-dark: #ff5252;
     --secondary: #4ecdc4;
+    --secondary-dark: #3dbeb6;
     --dark: #292f36;
     --light: #f7fff7;
     --accent: #ffe66d;
+    --gray: #e9ecef;
+    --gray-dark: #adb5bd;
+    --shadow: 0 10px 30px rgba(0,0,0,0.1);
+    --radius: 12px;
 }
 
 * {
@@ -14,319 +20,385 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
     color: var(--dark);
-}
-
-header {
-    background-color: var(--dark);
-    color: var(--light);
-    padding: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
 }
 
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--accent);
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-}
-
-nav ul li {
-    margin-left: 1.5rem;
-}
-
-nav ul li a {
-    color: var(--light);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-nav ul li a:hover {
-    color: var(--accent);
-}
-
-.user-actions {
-    display: flex;
-    align-items: center;
-}
-
-.btn {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: #ff5252;
-}
-
-.btn-secondary {
-    background-color: var(--secondary);
-}
-
-.btn-secondary:hover {
-    background-color: #3dbeb6;
-}
-
-.hero {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    padding: 4rem 1rem;
+header {
     text-align: center;
+    margin-bottom: 40px;
+    color: white;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-.hero p {
+header p {
     font-size: 1.2rem;
-    max-width: 600px;
-    margin: 0 auto 2rem;
+    opacity: 0.9;
 }
 
-.section {
-    padding: 3rem 1rem;
+.generator-section, .themes-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
 }
 
-.section-title {
-    text-align: center;
-    margin-bottom: 2rem;
+h2 {
     font-size: 2rem;
+    margin-bottom: 25px;
     color: var(--dark);
+    text-align: center;
 }
 
-.meme-grid {
+.generator-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
 }
 
-.meme-card {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+.controls-panel {
+    background: var(--gray);
+    padding: 25px;
+    border-radius: var(--radius);
+    border: 3px dashed var(--gray-dark);
 }
 
-.meme-card:hover {
-    transform: translateY(-5px);
+.control-group {
+    margin-bottom: 20px;
 }
 
-.meme-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-.meme-info {
-    padding: 1rem;
-}
-
-.meme-title {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.meme-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    color: #666;
-    font-size: 0.9rem;
-}
-
-.meme-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.meme-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.like-btn {
-    color: var(--primary);
-}
-
-.dislike-btn {
-    color: #666;
-}
-
-.meme-generator {
-    background-color: white;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.generator-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.generator-controls input, 
-.generator-controls textarea {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.control-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
     font-size: 1rem;
 }
 
-.generator-controls textarea {
-    min-height: 100px;
-    resize: vertical;
+.file-upload {
+    position: relative;
+    width: 100%;
 }
 
-.meme-canvas-container {
-    position: relative;
-    margin-bottom: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
+.file-upload-btn {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    border: none;
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.file-upload-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+}
+
+.file-name {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #666;
     text-align: center;
 }
 
-#memeCanvas {
+.text-input {
     width: 100%;
-    max-width: 500px;
-    display: block;
-    margin: 0 auto;
-    background-color: #f9f9f9;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(78,205,196,0.2);
+}
+
+.text-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+}
+
+.color-picker {
+    width: 100%;
+    height: 40px;
+    border: 2px solid #ddd;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: var(--secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(78,205,196,0.4);
+}
+
+.btn-small {
+    padding: 8px 15px;
+    background: var(--gray-dark);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.preview-panel {
+    background: var(--gray);
+    padding: 25px;
+    border-radius: var(--radius);
+    border: 3px dashed var(--gray-dark);
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.preview-header h3 {
+    font-size: 1.5rem;
+    color: var(--dark);
+}
+
+.meme-canvas-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#memeCanvas {
+    max-width: 100%;
+    max-height: 350px;
+    border-radius: 8px;
+    display: none;
+}
+
+.canvas-placeholder {
+    text-align: center;
+    color: var(--gray-dark);
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
 }
 
 .theme-tabs {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 10px;
+    margin-bottom: 25px;
     flex-wrap: wrap;
 }
 
 .theme-tab {
-    padding: 0.5rem 1rem;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid var(--gray-dark);
+    border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s;
+    font-weight: 500;
 }
 
 .theme-tab.active {
-    background-color: var(--secondary);
+    background: var(--secondary);
     color: white;
     border-color: var(--secondary);
 }
 
-footer {
-    background-color: var(--dark);
-    color: var(--light);
-    padding: 2rem 1rem;
-    text-align: center;
+.theme-tab:hover:not(.active) {
+    border-color: var(--secondary);
+    color: var(--secondary);
 }
 
-.footer-content {
+.themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.theme-card {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    border: 3px solid transparent;
+    cursor: pointer;
+}
+
+.theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border-color: var(--accent);
+}
+
+.theme-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+}
+
+.theme-info {
+    padding: 20px;
+}
+
+.theme-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 8px;
 }
 
-.social-links {
+.theme-stats {
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
 }
 
-.social-links a {
-    color: var(--light);
-    font-size: 1.5rem;
-}
-
-.comment-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #eee;
-}
-
-.comment {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.comment-form {
+.theme-tags {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.comment-form input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.theme-tag {
+    background: var(--light);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--dark);
+}
+
+.icon {
+    font-size: 1.2rem;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
+    .generator-container {
+        grid-template-columns: 1fr;
     }
     
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
+    .action-buttons {
+        grid-template-columns: 1fr;
     }
     
-    nav ul li {
-        margin: 0.5rem;
+    .text-controls {
+        grid-template-columns: 1fr;
     }
     
-    .hero h1 {
-        font-size: 2rem;
+    header h1 {
+        font-size: 2.2rem;
     }
     
-    .meme-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    h2 {
+        font-size: 1.7rem;
     }
     
     .theme-tabs {
         flex-direction: column;
         align-items: center;
+    }
+    
+    .theme-tab {
+        width: 100%;
+        text-align: center;
     }
 }
